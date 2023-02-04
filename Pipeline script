@@ -1,6 +1,6 @@
 ---
 - name: Display current date and time in IST
-  hosts: all
+  hosts: localhost
   tasks:
     - name: Get current time
       command: "date +'%Y-%m-%d %H:%M:%S %Z'"
