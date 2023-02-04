@@ -1,19 +1,12 @@
----
-- name: Display current date and time in IST
-  hosts: localhost
-  tasks:
-    - name: Get current time
-      command: "date +'%Y-%m-%d %H:%M:%S %Z'"
-      register: current_time
-
-    - name: Set the timezone to IST
-      set_fact:
-        timezone: Asia/Kolkata
-
-    - name: Convert to IST
-      command: TZ={{ timezone }} date -d "$(cat {{ current_time.stdout }})" +'%Y-%m-%d %H:%M:%S %Z'
-      register: current_time_ist
-
-    - name: Display the current time in IST
-      debug:
-        var: current_time_ist.stdout
+pipeline:
+  stages:
+  - stage: Display Date and Time
+    steps:
+    - script:
+        date -u +'%d-%m-%Y %H:%M:%S %Z' -d '5 hours 30 minutes ago'
+      id: display_date_and_time
+    - script:
+        date -u +'%d-%m-%Y %H:%M:%S %Z' -d '6 hours 30 minutes ago'
+      id: display_date_and_time_ahead
+    - echo: "Current date and time in IST: ${display_date_and_time.output}"
+    - echo: "Date and time in IST one hour ahead: ${display_date_and_time_ahead.output}"
