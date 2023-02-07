@@ -1,0 +1,13 @@
+- name: Display current date and time in IST
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Display current date and time in IST
+      shell: |
+        echo "Current date and time in IST: $(TZ=Asia/Kolkata date)"
+        echo "One hour ahead time in IST: $(TZ=Asia/Kolkata date --date='+1 hour')"
+      register: result
+
+    - name: Print output
+      debug:
+        var: result.stdout_lines
